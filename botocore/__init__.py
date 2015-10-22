@@ -14,6 +14,7 @@
 
 import os
 import re
+import sys
 import logging
 
 __version__ = '1.2.11'
@@ -51,7 +52,13 @@ _xform_cache = {
 }
 ScalarTypes = ('string', 'integer', 'boolean', 'timestamp', 'float', 'double')
 
-BOTOCORE_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+if getattr(sys, 'frozen', False):
+    # we are running in a pyinstaller bundle
+    BOTOCORE_ROOT = os.path.join(sys._MEIPASS, 'botocore')
+else:
+    # we are running in a normal Python environment
+    BOTOCORE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Used to specify anonymous (unsigned) request signature
 UNSIGNED = object()
